@@ -399,19 +399,33 @@ ${banner.html_code}
           .maybeSingle();
 
         if (existingInspection) {
-          await supabase
+          console.log(`[Job ${jobId}] Updating existing inspection result...`);
+          const { data: updateData, error: updateError } = await supabase
             .from("inspection_results")
             .update({
               banner_inspection_report: result.bannerInspectionReport,
               inspected_at: new Date().toISOString(),
             })
             .eq("banner_id", banner.id);
+          
+          if (updateError) {
+            console.error(`[Job ${jobId}] Failed to update inspection result:`, updateError);
+            throw updateError;
+          }
+          console.log(`[Job ${jobId}] Inspection result updated successfully`);
         } else {
-          await supabase.from("inspection_results").insert({
+          console.log(`[Job ${jobId}] Creating new inspection result...`);
+          const { data: insertData, error: insertError } = await supabase.from("inspection_results").insert({
             banner_id: banner.id,
             banner_inspection_report: result.bannerInspectionReport,
             inspected_at: new Date().toISOString(),
           });
+          
+          if (insertError) {
+            console.error(`[Job ${jobId}] Failed to insert inspection result:`, insertError);
+            throw insertError;
+          }
+          console.log(`[Job ${jobId}] Inspection result inserted successfully`);
         }
 
         const isPassed =
