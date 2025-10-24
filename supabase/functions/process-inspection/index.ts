@@ -205,33 +205,54 @@ async function processJobInBackground(jobId: string) {
       const contentParts: any[] = [
         {
           type: "text",
-          text: `Please inspect this banner for LG brand guideline compliance. Banner title: ${banner.title}`,
-        },
-        {
-          type: "image_url",
-          image_url: {
-            url: desktopImageUrl,
-            detail: "high",
-          },
-        },
-        {
-          type: "image_url",
-          image_url: {
-            url: mobileImageUrl,
-            detail: "high",
-          },
-        },
-      ];
+          text: `다음 자료를 바탕으로 웹 배너 검수를 수행해주세요:
 
-      if (approvedIconsUrl) {
-        contentParts.push({
+## 입력 자료
+
+**1. HTML 코드:**`
+        },
+        {
+          type: "text",
+          text: banner.html_code // 실제 HTML 코드 삽입
+        },
+        {
+          type: "text",
+          text: "**2. PC 배경 이미지:**"
+        },
+        {
           type: "image_url",
-          image_url: {
+          image_url: { 
+            url: desktopImageUrl,
+            detail: "high"
+          }
+        },
+        {
+          type: "text",
+          text: "**3. 모바일 배경 이미지:**"
+        },
+        {
+          type: "image_url",
+          image_url: { 
+            url: mobileImageUrl,
+            detail: "high"
+          }
+        },
+        {
+          type: "text",
+          text: "**4. 승인된 아이콘 목록 이미지:**"
+        },
+        {
+          type: "image_url",
+          image_url: { 
             url: approvedIconsUrl,
-            detail: "high",
-          },
-        });
-      }
+            detail: "high"
+          }
+        },
+        {
+          type: "text",
+          text: "\n\n위의 모든 입력 자료를 바탕으로 웹 배너 검수를 수행하고 JSON 형식으로 결과를 출력해주세요."
+        }
+      ];
 
       console.log(`[Job ${jobId}] Calling OpenAI API...`);
 
