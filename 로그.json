@@ -1,0 +1,802 @@
+[
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "08813022-8eb6-48da-8548-65fe29f37241",
+    "level": "log",
+    "timestamp": 1761294072566000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "8b3af7db-97c3-48dd-8dd5-184f0d805069",
+    "level": "log",
+    "timestamp": 1761294072121000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "35ca79b4-f828-440b-8c85-f481dbc43634",
+    "level": "info",
+    "timestamp": 1761294057701000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/stanbyme2-bundle/update/720x960.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "b5486623-d2a7-42ed-a064-5f6bc83b3d59",
+    "level": "info",
+    "timestamp": 1761294057701000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/stanbyme2-bundle/update/1920x720_notxt.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "6424db8d-0836-41dc-8b79-53dad7adc834",
+    "level": "info",
+    "timestamp": 1761294057701000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Model: gpt-4.1, Content parts: 8\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "cc15a642-3305-4fba-87f0-33b9b342dda7",
+    "level": "info",
+    "timestamp": 1761294057701000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] [6/7] Processing banner: StanbyME 2 Offer\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "4553979c-5b59-4ee7-b8a7-98a64ff62078",
+    "level": "info",
+    "timestamp": 1761294057647000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] ✓ Completed banner: LG gram Offer (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "fbe82a9e-2094-4e07-8492-017107ffe376",
+    "level": "info",
+    "timestamp": 1761294057610000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Inspection completed - Desktop: 준수, Mobile: 준수\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "1040fc15-bbe4-4d1f-abb1-2aeb1641499d",
+    "level": "info",
+    "timestamp": 1761294057567000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Creating new inspection result...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "ab1cb5a4-bdd3-449a-8a9c-476591a4ffd0",
+    "level": "info",
+    "timestamp": 1761294057533000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] JSON parsed successfully, saving to database...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "9a82d834-419c-4ea2-85e4-e12e43809985",
+    "level": "info",
+    "timestamp": 1761294057485000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] OpenAI response received (33459ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "a61d9e05-c259-4cf1-9b64-11a461c289b1",
+    "level": "info",
+    "timestamp": 1761294057485000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Response length: 2475 chars\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "11d08ee2-73cf-4a7a-91d2-0f9bbbd6c530",
+    "level": "info",
+    "timestamp": 1761294057485000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Parsing JSON response...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "8fc3f694-f48f-465a-87dd-afb0bbfb3b11",
+    "level": "info",
+    "timestamp": 1761294057485000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/bts/laptop-update/720x960.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "91487078-e832-49ba-a91b-c3a9ba0811e1",
+    "level": "info",
+    "timestamp": 1761294024026000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Model: gpt-4.1, Content parts: 8\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "572190f7-fa89-4201-b6be-962d8bc7077a",
+    "level": "info",
+    "timestamp": 1761294024026000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "4f74a972-b650-43e7-afa0-76e38c0d5b1f",
+    "level": "info",
+    "timestamp": 1761294024026000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/bts/laptop-update/1920x720_NT.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "9e3f61e8-e575-4051-91f2-ae86a1a0f818",
+    "level": "info",
+    "timestamp": 1761294024026000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] [5/7] Processing banner: LG gram Offer\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "e1675fdd-34f2-4adc-9a25-0f2405bb1fb8",
+    "level": "info",
+    "timestamp": 1761294023988000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] ✓ Completed banner: CineBeam S Offer (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "4d3eb9da-34e2-4637-8334-4b1c265422fe",
+    "level": "info",
+    "timestamp": 1761294023951000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Inspection completed - Desktop: 준수, Mobile: 준수\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "ee5aa5eb-dea2-44cd-bc59-d21d97cc2a29",
+    "level": "info",
+    "timestamp": 1761294023898000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Creating new inspection result...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "cec6ddef-d6bf-44e4-bce7-91e3f47ecedd",
+    "level": "info",
+    "timestamp": 1761294023854000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] OpenAI response received (36085ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "25e80ebe-cc2f-4090-b3fb-782752752f9a",
+    "level": "info",
+    "timestamp": 1761294023793000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Response length: 2315 chars\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "38b1145c-8a94-4557-877d-0a6e2572dce0",
+    "level": "info",
+    "timestamp": 1761294023793000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] JSON parsed successfully, saving to database...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "d31009c7-603a-4aeb-9418-662cfad53212",
+    "level": "info",
+    "timestamp": 1761294023793000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Parsing JSON response...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "a81e6b09-e5ea-467f-812a-bdd9a89e2cb7",
+    "level": "info",
+    "timestamp": 1761294023793000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/cinebeam-bundle/23-update/1920x720_notxt.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "033a720d-09dc-4185-a1a1-bc5b096322f8",
+    "level": "info",
+    "timestamp": 1761293987708000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/cinebeam-bundle/23-update/720x960.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "6d01be3a-6daf-4ba2-be8d-c8e7e9a8c1a6",
+    "level": "info",
+    "timestamp": 1761293987708000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "12112260-3309-4df7-86a3-eab8a2c1b9f9",
+    "level": "info",
+    "timestamp": 1761293987708000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Model: gpt-4.1, Content parts: 8\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "ec78153a-b5f6-4f92-9eb1-cf3ca5711bcf",
+    "level": "info",
+    "timestamp": 1761293987708000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] [4/7] Processing banner: CineBeam S Offer\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "c8458cb6-0629-4c45-8e86-28663d94df26",
+    "level": "info",
+    "timestamp": 1761293987676000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] ✓ Completed banner: xboom Offer (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "33bafc9f-271e-499f-ad2e-91ff0cf4351b",
+    "level": "info",
+    "timestamp": 1761293987642000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Inspection completed - Desktop: 부적합, Mobile: 부적합\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "1174da16-6958-459d-a8f4-fc60764d2c5c",
+    "level": "info",
+    "timestamp": 1761293987601000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Creating new inspection result...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "aad510c9-6ab2-4fd8-bd3a-25eb34549b8e",
+    "level": "info",
+    "timestamp": 1761293987568000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Parsing JSON response...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "65849bb4-0c6c-4a83-b02b-70005a0634ca",
+    "level": "info",
+    "timestamp": 1761293987530000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] JSON parsed successfully, saving to database...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "2e9ce304-3a6f-48bf-80f6-e631ce6542e7",
+    "level": "info",
+    "timestamp": 1761293987530000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] OpenAI response received (33299ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "87df0570-8da9-4052-b9da-9ffb84c0d028",
+    "level": "info",
+    "timestamp": 1761293987530000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Response length: 2904 chars\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "563c08d5-dd02-4db6-b5d3-1ba2957cbbde",
+    "level": "info",
+    "timestamp": 1761293987530000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Model: gpt-4.1, Content parts: 8\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "29122d2d-dcd4-4016-8f33-1ff359fa46b7",
+    "level": "info",
+    "timestamp": 1761293954231000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/20-off-xboom-speakers/update/xboom_LG.COM_1920x720_V2.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "42ad34fc-7f62-4cc4-878f-230648a4b6da",
+    "level": "info",
+    "timestamp": 1761293954231000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "1e767cdb-5b14-4e4f-9692-844737b3125c",
+    "level": "info",
+    "timestamp": 1761293954231000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/20-off-xboom-speakers/update/xboom_LG.COM_720x960_V2.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "c1851426-9b0c-4965-9129-197b3ffb7853",
+    "level": "info",
+    "timestamp": 1761293954231000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] [3/7] Processing banner: xboom Offer\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "512ff942-aaea-4a26-aa71-7f47f4cad8a6",
+    "level": "info",
+    "timestamp": 1761293954196000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] ✓ Completed banner: Laundry Bundle (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "5a84b21d-f2fc-4ecf-a4f7-12be7c8a0668",
+    "level": "info",
+    "timestamp": 1761293954158000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Inspection completed - Desktop: 준수, Mobile: 준수\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "7a2cb45f-d7ae-4e21-a7e1-6382e976fe80",
+    "level": "info",
+    "timestamp": 1761293954114000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Creating new inspection result...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "f27b78ea-6f83-4f0a-a70c-080e96f264cf",
+    "level": "info",
+    "timestamp": 1761293954083000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] JSON parsed successfully, saving to database...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "d4f1ebb8-9056-4e3a-b4b8-cc8720b19b4d",
+    "level": "info",
+    "timestamp": 1761293954031000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Response length: 2666 chars\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "ab72cfa8-2d2f-4ad6-9699-2cf55f84443f",
+    "level": "info",
+    "timestamp": 1761293954031000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Parsing JSON response...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "17023302-efbb-41fe-baf9-4c18d81943af",
+    "level": "info",
+    "timestamp": 1761293954031000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] OpenAI response received (34023ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "95ba0038-7c41-4aae-8d19-83754f75404b",
+    "level": "info",
+    "timestamp": 1761293954031000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Model: gpt-4.1, Content parts: 8\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "8d9c93c6-c5cf-4853-bbb9-6c167a989b3a",
+    "level": "info",
+    "timestamp": 1761293920008000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/wm-td-bundle/720x960.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "999259f4-ccba-4fa2-bdec-91cdae749868",
+    "level": "info",
+    "timestamp": 1761293920008000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/wm-td-bundle/1920x720.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "4b319d5d-83c1-456a-9148-d18a1f4a30b5",
+    "level": "info",
+    "timestamp": 1761293920008000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "eabcf98a-7b45-4824-9f04-c247e6f32b44",
+    "level": "info",
+    "timestamp": 1761293920008000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] [2/7] Processing banner: Laundry Bundle\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "539c3973-a680-4118-9f22-44294915f435",
+    "level": "info",
+    "timestamp": 1761293919973000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] ✓ Completed banner: Autumn Refresh (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "752872c4-57c7-4a98-8267-6246d3e2a51f",
+    "level": "info",
+    "timestamp": 1761293919934000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Inspection completed - Desktop: 준수, Mobile: 준수\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "86842260-7dfc-45db-8160-762bba3b73a1",
+    "level": "info",
+    "timestamp": 1761293919894000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Creating new inspection result...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "5364206e-dd2a-40bd-9af8-e02278c1e14e",
+    "level": "info",
+    "timestamp": 1761293919859000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Parsing JSON response...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "b705bfb4-4867-4a07-b673-116b5a834763",
+    "level": "info",
+    "timestamp": 1761293919804000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Response length: 2273 chars\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "f57231f0-5fbd-47c0-8a2c-eeb84665928e",
+    "level": "info",
+    "timestamp": 1761293919804000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] JSON parsed successfully, saving to database...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "1133f1ba-eb32-4717-a1e1-50e65d836370",
+    "level": "info",
+    "timestamp": 1761293919804000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] OpenAI response received (46750ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "e46ce047-a3b1-42e8-91df-bd4f3764381a",
+    "level": "info",
+    "timestamp": 1761293919804000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/autumn-refresh/1310-update/1920x720_NT.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "d7d7afe2-4691-412a-b386-b04bd26bf785",
+    "level": "info",
+    "timestamp": 1761293873054000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/autumn-refresh/1310-update/720x960.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "d3dd3152-b6aa-40ce-aa5c-094f9ec9d6ac",
+    "level": "info",
+    "timestamp": 1761293873054000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "9db77c2f-fc96-41cd-9d95-5bd5afc72208",
+    "level": "info",
+    "timestamp": 1761293873054000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Model: gpt-4.1, Content parts: 8\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "f5e43160-501b-4621-96ae-0c362029187b",
+    "level": "info",
+    "timestamp": 1761293873054000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] [1/7] Processing banner: Autumn Refresh\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "3751388a-4d42-4c15-98a3-358077552661",
+    "level": "info",
+    "timestamp": 1761293873012000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Processing 7 banner(s)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "0e4501fa-fcd9-4720-863b-5b96aa914fc5",
+    "level": "info",
+    "timestamp": 1761293872917000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Approved icons URL: https://kfsawswzupmullhwrypa.supabase.co/storage/v1/object/public/banner-assets/system-assets/approved-icons.jpeg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "a8c588d0-ecb9-4368-aeb7-21cb4b6942d7",
+    "level": "info",
+    "timestamp": 1761293872837000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Job type: all_banners\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "367b01d6-ba90-40eb-bf84-296f8bed11df",
+    "level": "info",
+    "timestamp": 1761293872744000
+  },
+  {
+    "event_message": "[Job d6275fae-73f0-4717-8d89-9c72bec5ec3c] Starting inspection job...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "778347f3-bf6a-4ecc-9db3-b5ec3bf11e09",
+    "level": "info",
+    "timestamp": 1761293872607000
+  },
+  {
+    "event_message": "booted (time: 49ms)",
+    "event_type": "Boot",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "3ff09e8b-92fc-42c1-8208-c3a6c74f8347",
+    "level": "log",
+    "timestamp": 1761293872540000
+  },
+  {
+    "event_message": "booted (time: 120ms)",
+    "event_type": "Boot",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "776b9655-53cc-474a-9b1c-4f27ca1ecfcc",
+    "level": "log",
+    "timestamp": 1761293872090000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "d0d1b4a0-6877-4896-81fd-320645c76b8f",
+    "level": "log",
+    "timestamp": 1761293748402000
+  },
+  {
+    "event_message": "shutdown",
+    "event_type": "Shutdown",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "c201b9b2-9cef-4798-b6f5-e698c5b5c218",
+    "level": "log",
+    "timestamp": 1761293747984000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/stanbyme2-bundle/update/720x960.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "8627a9cf-59b2-44df-b11c-75d276733409",
+    "level": "info",
+    "timestamp": 1761293726456000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/stanbyme2-bundle/update/1920x720_notxt.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "bc01086d-285f-4da7-a32f-03303fbf81c3",
+    "level": "info",
+    "timestamp": 1761293726456000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "29553f97-8bb0-4980-865f-ca54e930a9bd",
+    "level": "info",
+    "timestamp": 1761293726456000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] [6/7] Processing banner: StanbyME 2 Offer\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "5d80fadf-e585-46f1-9a9b-97d6ad78ad38",
+    "level": "info",
+    "timestamp": 1761293726424000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] ✓ Completed banner: LG gram Offer (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "44be1cd1-01b7-4984-90fe-0dd9a8f19b69",
+    "level": "info",
+    "timestamp": 1761293726392000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] OpenAI response received (33922ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "48a1ce21-41c9-4b79-b0bf-b36dd8af0f67",
+    "level": "info",
+    "timestamp": 1761293726298000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "60268aa9-6d23-4dc6-a10b-112a89f5c67b",
+    "level": "info",
+    "timestamp": 1761293692376000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/bts/laptop-update/1920x720_NT.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "b4dc7eef-5712-4fe6-a88c-10343085dbe8",
+    "level": "info",
+    "timestamp": 1761293692376000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/bts/laptop-update/720x960.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "6094d349-38b6-40c9-b06c-72b21a164448",
+    "level": "info",
+    "timestamp": 1761293692376000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] [5/7] Processing banner: LG gram Offer\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "798b0d19-36cc-4e46-9985-d47f2ab05363",
+    "level": "info",
+    "timestamp": 1761293692325000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] ✓ Completed banner: CineBeam S Offer (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "fc3648da-00fd-4578-931a-c49848d9010a",
+    "level": "info",
+    "timestamp": 1761293692291000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] OpenAI response received (33857ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "b81624c9-f30f-46f2-8dfa-69a539a2069c",
+    "level": "info",
+    "timestamp": 1761293692179000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "2bfe828a-c6dd-467a-a2e3-ecd1e21850ea",
+    "level": "info",
+    "timestamp": 1761293658321000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/cinebeam-bundle/23-update/1920x720_notxt.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "ddb76609-c670-429c-8364-e3bc7c691a98",
+    "level": "info",
+    "timestamp": 1761293658321000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/cinebeam-bundle/23-update/720x960.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "73969487-77a4-4241-a5a6-ae287b82bc6a",
+    "level": "info",
+    "timestamp": 1761293658321000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] [4/7] Processing banner: CineBeam S Offer\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "d17f17bd-34cd-4b2c-a6e4-3be44634fddd",
+    "level": "info",
+    "timestamp": 1761293658285000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] ✓ Completed banner: xboom Offer (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "438a957a-daef-4486-a1bf-9bd45f323abb",
+    "level": "info",
+    "timestamp": 1761293658252000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] OpenAI response received (39395ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "db45aefb-ca4c-4744-addb-1c95526b9225",
+    "level": "info",
+    "timestamp": 1761293658096000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Mobile image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/20-off-xboom-speakers/update/xboom_LG.COM_720x960_V2.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "83f7d7f7-ead8-44b6-a541-fa180d56d443",
+    "level": "info",
+    "timestamp": 1761293618701000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "ef8ee0ce-35c1-40ce-b1f6-bada3a515f97",
+    "level": "info",
+    "timestamp": 1761293618701000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Desktop image: https://www.lg.com/content/dam/channel/wcms/uk/2025-promotions/20-off-xboom-speakers/update/xboom_LG.COM_1920x720_V2.jpg\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "216a7cbc-48a1-45f7-840d-12c10adda5cc",
+    "level": "info",
+    "timestamp": 1761293618701000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] [3/7] Processing banner: xboom Offer\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "8247391c-6954-46a6-9cac-81de3f23fc87",
+    "level": "info",
+    "timestamp": 1761293618662000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] ✓ Completed banner: Laundry Bundle (FAILED)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "920fddce-7cd6-4d97-8c59-b7c309b90de7",
+    "level": "info",
+    "timestamp": 1761293618629000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] OpenAI response received (36620ms)\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "36ef8740-e661-40d4-8a3e-b6d0e87fce59",
+    "level": "info",
+    "timestamp": 1761293618236000
+  },
+  {
+    "event_message": "[Job bef87775-5db3-471a-a4bc-8a4be0bbb2d7] Calling OpenAI API...\n",
+    "event_type": "Log",
+    "function_id": "51be254c-ab2c-473f-bad1-a205f4119201",
+    "id": "008a8e50-1421-402d-aabe-5e43010fa265",
+    "level": "info",
+    "timestamp": 1761293581616000
+  }
+]
