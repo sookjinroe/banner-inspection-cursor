@@ -348,6 +348,7 @@ ${banner.html_code}
         );
 
         console.log(`[Job ${jobId}] Calling OpenAI API...`);
+        console.log(`[Job ${jobId}] Model: gpt-4.1, Content parts: ${contentParts.length}`);
         const startTime = Date.now();
 
         const completion = await Promise.race([
@@ -368,24 +369,27 @@ ${banner.html_code}
             temperature: 0.1,
           }),
           new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("OpenAI API timeout after 60 seconds")), 150000)
+            setTimeout(() => reject(new Error("OpenAI API timeout after 150 seconds")), 150000)
           ),
         ]);
 
         const elapsed = Date.now() - startTime;
         console.log(`[Job ${jobId}] OpenAI response received (${elapsed}ms)`);
+        console.log(`[Job ${jobId}] Response length: ${completion.choices[0].message.content?.length || 0} chars`);
 
         const responseText = completion.choices[0].message.content;
         if (!responseText) {
           throw new Error("No response from OpenAI");
         }
 
+        console.log(`[Job ${jobId}] Parsing JSON response...`);
         const result = JSON.parse(responseText);
 
         if (!result.bannerInspectionReport) {
           throw new Error("Invalid response format from OpenAI - missing bannerInspectionReport");
         }
 
+        console.log(`[Job ${jobId}] JSON parsed successfully, saving to database...`);
         const { data: existingInspection } = await supabase
           .from("inspection_results")
           .select("id")
@@ -393,6 +397,7 @@ ${banner.html_code}
           .maybeSingle();
 
         if (existingInspection) {
+          console.log(`[Job ${jobId}] Updating existing inspection result...`);
           await supabase
             .from("inspection_results")
             .update({
@@ -401,6 +406,7 @@ ${banner.html_code}
             })
             .eq("banner_id", banner.id);
         } else {
+          console.log(`[Job ${jobId}] Creating new inspection result...`);
           await supabase.from("inspection_results").insert({
             banner_id: banner.id,
             banner_inspection_report: result.bannerInspectionReport,
@@ -411,6 +417,8 @@ ${banner.html_code}
         const isPassed =
           result.bannerInspectionReport?.desktop?.overallStatus === "적합" &&
           result.bannerInspectionReport?.mobile?.overallStatus === "적합";
+
+        console.log(`[Job ${jobId}] Inspection completed - Desktop: ${result.bannerInspectionReport?.desktop?.overallStatus}, Mobile: ${result.bannerInspectionReport?.mobile?.overallStatus}`);
 
         if (isPassed) passedCount++;
 
@@ -429,6 +437,8 @@ ${banner.html_code}
         console.error(`[Job ${jobId}] ✗ Failed to process banner ${banner.title}:`, error);
 
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        console.log(`[Job ${jobId}] Error details: ${errorMessage}`);
+        
         let skipReason: string | null = null;
         let shouldSkip = false;
 
