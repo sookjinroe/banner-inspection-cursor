@@ -310,8 +310,10 @@ async function processJobInBackground(jobId: string) {
       }
 
       const isPassed =
-        result.bannerInspectionReport?.desktop?.overallStatus === "적합" &&
-        result.bannerInspectionReport?.mobile?.overallStatus === "적합";
+        (result.bannerInspectionReport?.desktop?.overallStatus === "적합" || 
+         result.bannerInspectionReport?.desktop?.overallStatus === "준수") &&
+        (result.bannerInspectionReport?.mobile?.overallStatus === "적합" || 
+         result.bannerInspectionReport?.mobile?.overallStatus === "준수");
 
       if (isPassed) {
         passedCount++;
@@ -410,8 +412,8 @@ async function processJobInBackground(jobId: string) {
     if (!data) return false;
     const report = data.banner_inspection_report;
     return (
-      report?.desktop?.overallStatus === "적합" &&
-      report?.mobile?.overallStatus === "적합"
+      (report?.desktop?.overallStatus === "적합" || report?.desktop?.overallStatus === "준수") &&
+      (report?.mobile?.overallStatus === "적합" || report?.mobile?.overallStatus === "준수")
     );
   }).length;
 
