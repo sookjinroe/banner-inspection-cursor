@@ -352,7 +352,7 @@ ${banner.html_code}
 
         const completion = await Promise.race([
           openai.chat.completions.create({
-            model: "gpt-5",
+            model: "gpt-4.1",
             messages: [
               {
                 role: "system",
@@ -364,7 +364,8 @@ ${banner.html_code}
               },
             ],
             response_format: { type: "json_object" },
-            max_completion_tokens: 4096,
+            max_tokens: 4096,
+            temperature: 0.1,
           }),
           new Promise<never>((_, reject) =>
             setTimeout(() => reject(new Error("OpenAI API timeout after 60 seconds")), 150000)
