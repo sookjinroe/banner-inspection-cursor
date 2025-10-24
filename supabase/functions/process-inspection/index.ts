@@ -95,7 +95,7 @@ detailedReport의 comment를 작성할 때는, 해당 카테고리에서 **발�
 
 최종 결과는 아래의 JSON 구조를 반드시 유지해야 합니다.
 
-    `// JSON 출력 예시
+\`// JSON 출력 예시
 {
   "bannerInspectionReport": {
     "desktop": {
@@ -127,7 +127,7 @@ detailedReport의 comment를 작성할 때는, 해당 카테고리에서 **발�
       ]
     }
   }
-}`
+}\`
 
 ⚠️⚠️⚠️주의사항: 아이콘 우측 텍스트 레이블은 이미지 내 텍스트 검수 대상이 아닙니다.`;
 
