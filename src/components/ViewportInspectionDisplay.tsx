@@ -26,8 +26,8 @@ export function ViewportInspectionDisplay({
     return status === '준수' ? 'bg-green-500' : 'bg-red-500';
   };
 
-  const getOverallStatusBadge = (status: '적합' | '부적합') => {
-    if (status === '적합') {
+  const getOverallStatusBadge = (status: '적합' | '부적합' | '준수') => {
+    if (status === '적합' || status === '준수') {
       return (
         <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-lg">
           <CheckCircle className="w-5 h-5" />

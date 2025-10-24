@@ -73,8 +73,8 @@ export function isInspectionPassed(report: BannerInspectionReport | null | undef
   if (!report) return false;
 
   return (
-    report.desktop?.overallStatus === '적합' &&
-    report.mobile?.overallStatus === '적합'
+    (report.desktop?.overallStatus === '적합' || report.desktop?.overallStatus === '준수') &&
+    (report.mobile?.overallStatus === '적합' || report.mobile?.overallStatus === '준수')
   );
 }
 
@@ -84,7 +84,7 @@ export function getInspectionSummary(report: BannerInspectionReport | null | und
   const desktopStatus = report.desktop?.overallStatus || '미검수';
   const mobileStatus = report.mobile?.overallStatus || '미검수';
 
-  if (desktopStatus === '적합' && mobileStatus === '적합') {
+  if ((desktopStatus === '적합' || desktopStatus === '준수') && (mobileStatus === '적합' || mobileStatus === '준수')) {
     return 'Passed';
   } else if (desktopStatus === '부적합' || mobileStatus === '부적합') {
     return 'Failed';

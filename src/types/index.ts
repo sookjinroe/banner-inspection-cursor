@@ -50,7 +50,7 @@ export interface BannerInspectionReport {
 }
 
 export interface ViewportInspection {
-  overallStatus: '적합' | '부적합';
+  overallStatus: '적합' | '부적합' | '준수';
   issues?: InspectionIssue[];
   detailedReport: DetailedReportItem[];
 }
