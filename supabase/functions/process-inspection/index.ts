@@ -364,7 +364,7 @@ ${banner.html_code}
               },
             ],
             response_format: { type: "json_object" },
-            max_tokens: 4096,
+            max_completion_tokens: 4096,
             temperature: 0.1,
           }),
           new Promise<never>((_, reject) =>
