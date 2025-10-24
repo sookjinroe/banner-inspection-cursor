@@ -365,7 +365,6 @@ ${banner.html_code}
             ],
             response_format: { type: "json_object" },
             max_completion_tokens: 4096,
-            temperature: 0.1,
           }),
           new Promise<never>((_, reject) =>
             setTimeout(() => reject(new Error("OpenAI API timeout after 60 seconds")), 150000)
