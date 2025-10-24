@@ -1,8 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 import { readFileSync } from 'fs';
+import dotenv from 'dotenv';
 
-const supabaseUrl = 'https://mfotyqmhbzmxhhmfojjd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1mb3R5cW1oYnpteGhobWZvampkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NDI3MzMsImV4cCI6MjA3NjExODczM30.Meg1IEN1j3jtjHzJ8FdkQnkrkH-1HFrQldCkWKsFDE0';
+dotenv.config();
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('❌ Supabase configuration missing!');
+  console.error('Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file');
+  process.exit(1);
+}
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const collectionId = 'de079f14-b664-436d-85df-64ba1780ee92';
