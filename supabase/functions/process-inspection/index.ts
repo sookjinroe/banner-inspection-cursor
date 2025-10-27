@@ -257,41 +257,53 @@ async function processJobInBackground(jobId: string) {
       console.log(`[Job ${jobId}] Calling OpenAI API...`);
 
       const startTime = Date.now();
-      const completion = await Promise.race([
-        openai.chat.completions.create({
-          model: "gpt-4.1",
-          messages: [
-            {
-              role: "system",
-              content: [{ type: "text", text: SYSTEM_PROMPT }],
-            },
-            {
-              role: "user",
-              content: contentParts,
-            },
-          ],
-          response_format: { type: "json_object" },
-          max_tokens: 4096,
-          temperature: 0.1,
-        }),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error("OpenAI API timeout after 150 seconds")), 150000)
-        ),
-      ]);
+      
+      let completion;
+      try {
+        completion = await Promise.race([
+          openai.chat.completions.create({
+            model: "gpt-4.1",
+            messages: [
+              {
+                role: "system",
+                content: [{ type: "text", text: SYSTEM_PROMPT }],
+              },
+              {
+                role: "user",
+                content: contentParts,
+              },
+            ],
+            response_format: { type: "json_object" },
+            max_tokens: 4096,
+            temperature: 0.1,
+          }),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("OpenAI API timeout after 150 seconds")), 150000)
+          ),
+        ]);
 
-      const responseTime = Date.now() - startTime;
-      console.log(`[Job ${jobId}] OpenAI response received (${responseTime}ms)`);
+        const responseTime = Date.now() - startTime;
+        console.log(`[Job ${jobId}] OpenAI response received (${responseTime}ms)`);
 
-      const responseText = completion.choices[0]?.message?.content;
-      if (!responseText) {
-        throw new Error("No response from OpenAI");
+        const responseText = completion.choices[0]?.message?.content;
+        if (!responseText) {
+          throw new Error("No response from OpenAI");
+        }
+
+        console.log(`[Job ${jobId}] Response length: ${responseText.length} chars`);
+
+        console.log(`[Job ${jobId}] Parsing JSON response...`);
+        const result = JSON.parse(responseText);
+        console.log(`[Job ${jobId}] JSON parsed successfully, saving to database...`);
+      } catch (error) {
+        console.error(`[Job ${jobId}] ❌ OpenAI API Error:`, error);
+        console.error(`[Job ${jobId}] Error type:`, error instanceof Error ? error.constructor.name : typeof error);
+        console.error(`[Job ${jobId}] Error message:`, error instanceof Error ? error.message : String(error));
+        console.error(`[Job ${jobId}] Error stack:`, error instanceof Error ? error.stack : 'No stack trace');
+        throw error;
       }
 
-      console.log(`[Job ${jobId}] Response length: ${responseText.length} chars`);
-
-      console.log(`[Job ${jobId}] Parsing JSON response...`);
-      const result = JSON.parse(responseText);
-      console.log(`[Job ${jobId}] JSON parsed successfully, saving to database...`);
+      const responseText = completion.choices[0]?.message?.content;
 
       // Check if inspection result already exists
       const { data: existingInspection } = await supabase
