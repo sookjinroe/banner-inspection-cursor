@@ -177,241 +177,33 @@ async function processJobInBackground(jobId: string) {
 
   let passedCount = 0;
 
-  for (let i = 0; i < bannersToProcess.length; i++) {
-    const banner = bannersToProcess[i];
-    console.log(`[Job ${jobId}] [${i + 1}/${bannersToProcess.length}] Processing banner: ${banner.title}`);
-
-    try {
-      // Create job log entry
-      await supabase.from("inspection_job_logs").insert({
-        job_id: jobId,
-        banner_id: banner.id,
-        status: "processing",
-        created_at: new Date().toISOString(),
-      });
-
-      // Get banner images
-      const desktopImageUrl = banner.image_desktop;
-      const mobileImageUrl = banner.image_mobile;
-
-      if (!desktopImageUrl || !mobileImageUrl) {
-        throw new Error("Banner images not available");
-      }
-
-      console.log(`[Job ${jobId}] Desktop image: ${desktopImageUrl}`);
-      console.log(`[Job ${jobId}] Mobile image: ${mobileImageUrl}`);
-
-      // Prepare content parts for OpenAI
-      const contentParts: any[] = [
-        {
-          type: "text",
-          text: `다음 자료를 바탕으로 웹 배너 검수를 수행해주세요:
-
-## 입력 자료
-
-**1. HTML 코드:**`
-        },
-        {
-          type: "text",
-          text: banner.html_code // 실제 HTML 코드 삽입
-        },
-        {
-          type: "text",
-          text: "**2. PC 배경 이미지:**"
-        },
-        {
-          type: "image_url",
-          image_url: { 
-            url: desktopImageUrl,
-            detail: "high"
-          }
-        },
-        {
-          type: "text",
-          text: "**3. 모바일 배경 이미지:**"
-        },
-        {
-          type: "image_url",
-          image_url: { 
-            url: mobileImageUrl,
-            detail: "high"
-          }
-        },
-        {
-          type: "text",
-          text: "**4. 승인된 아이콘 목록 이미지:**"
-        },
-        {
-          type: "image_url",
-          image_url: { 
-            url: approvedIconsUrl,
-            detail: "high"
-          }
-        },
-        {
-          type: "text",
-          text: "\n\n위의 모든 입력 자료를 바탕으로 웹 배너 검수를 수행하고 JSON 형식으로 결과를 출력해주세요."
-        }
-      ];
-
-      console.log(`[Job ${jobId}] Calling OpenAI API...`);
-
-      const startTime = Date.now();
-      
-      let completion;
-      let result;
-      try {
-        completion = await Promise.race([
-          openai.chat.completions.create({
-            model: "gpt-4.1",
-            messages: [
-              {
-                role: "system",
-                content: [{ type: "text", text: SYSTEM_PROMPT }],
-              },
-              {
-                role: "user",
-                content: contentParts,
-              },
-            ],
-            response_format: { type: "json_object" },
-            max_tokens: 4096,
-            temperature: 0.1,
-          }),
-          new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("OpenAI API timeout after 150 seconds")), 150000)
-          ),
-        ]);
-
-        const responseTime = Date.now() - startTime;
-        console.log(`[Job ${jobId}] OpenAI response received (${responseTime}ms)`);
-
-        const responseText = completion.choices[0]?.message?.content;
-        if (!responseText) {
-          throw new Error("No response from OpenAI");
-        }
-
-        console.log(`[Job ${jobId}] Response length: ${responseText.length} chars`);
-
-        console.log(`[Job ${jobId}] Parsing JSON response...`);
-        result = JSON.parse(responseText);
-        console.log(`[Job ${jobId}] JSON parsed successfully, saving to database...`);
-      } catch (error) {
-        console.error(`[Job ${jobId}] ❌ OpenAI API Error:`, error);
-        console.error(`[Job ${jobId}] Error type:`, error instanceof Error ? error.constructor.name : typeof error);
-        console.error(`[Job ${jobId}] Error message:`, error instanceof Error ? error.message : String(error));
-        console.error(`[Job ${jobId}] Error stack:`, error instanceof Error ? error.stack : 'No stack trace');
-        throw error;
-      }
-
-      // Check if inspection result already exists
-      const { data: existingInspection } = await supabase
-        .from("inspection_results")
-        .select("id")
-        .eq("banner_id", banner.id)
-        .maybeSingle();
-
-      if (existingInspection) {
-        console.log(`[Job ${jobId}] Updating existing inspection result...`);
-        const { data: updateData, error: updateError } = await supabase
-          .from("inspection_results")
-          .update({
-            banner_inspection_report: result.bannerInspectionReport,
-            inspected_at: new Date().toISOString(),
-          })
-          .eq("banner_id", banner.id);
-        
-        if (updateError) {
-          console.error(`[Job ${jobId}] Failed to update inspection result:`, updateError);
-          throw updateError;
-        }
-        console.log(`[Job ${jobId}] Inspection result updated successfully`);
-      } else {
-        console.log(`[Job ${jobId}] Creating new inspection result...`);
-        const { data: insertData, error: insertError } = await supabase.from("inspection_results").insert({
-          banner_id: banner.id,
-          banner_inspection_report: result.bannerInspectionReport,
-          inspected_at: new Date().toISOString(),
-        });
-        
-        if (insertError) {
-          console.error(`[Job ${jobId}] Failed to insert inspection result:`, insertError);
-          throw insertError;
-        }
-        console.log(`[Job ${jobId}] Inspection result inserted successfully`);
-      }
-
-      const isPassed =
-        (result.bannerInspectionReport?.desktop?.overallStatus === "적합" || 
-         result.bannerInspectionReport?.desktop?.overallStatus === "준수") &&
-        (result.bannerInspectionReport?.mobile?.overallStatus === "적합" || 
-         result.bannerInspectionReport?.mobile?.overallStatus === "준수");
-
-      if (isPassed) {
+  // Process banners in batches of 4 (parallel processing)
+  const batchSize = 4;
+  
+  for (let i = 0; i < bannersToProcess.length; i += batchSize) {
+    const batch = bannersToProcess.slice(i, i + batchSize);
+    const batchNumber = Math.floor(i / batchSize) + 1;
+    const totalBatches = Math.ceil(bannersToProcess.length / batchSize);
+    
+    console.log(`[Job ${jobId}] Processing batch ${batchNumber}/${totalBatches} (${batch.length} banners)`);
+    
+    // Process batch in parallel using Promise.allSettled
+    const batchResults = await Promise.allSettled(
+      batch.map(banner => processBanner(banner, jobId, supabase, openai, approvedIconsUrl))
+    );
+    
+    // Count passed banners
+    for (const result of batchResults) {
+      if (result.status === 'fulfilled' && result.value === true) {
         passedCount++;
-      }
-
-      console.log(`[Job ${jobId}] Inspection completed - Desktop: ${result.bannerInspectionReport?.desktop?.overallStatus}, Mobile: ${result.bannerInspectionReport?.mobile?.overallStatus}`);
-
-      // Update job log
-      await supabase
-        .from("inspection_job_logs")
-        .update({
-          status: "completed",
-          updated_at: new Date().toISOString(),
-        })
-        .eq("job_id", jobId)
-        .eq("banner_id", banner.id);
-
-      console.log(`[Job ${jobId}] ✓ Completed banner: ${banner.title} (${isPassed ? "PASSED" : "FAILED"})`);
-
-    } catch (error) {
-      console.error(`[Job ${jobId}] ✗ Failed to process banner ${banner.title}:`, error);
-
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      let skipReason: string | null = null;
-      let shouldSkip = false;
-
-      if (errorMessage.includes('image') || errorMessage.includes('format') || errorMessage.includes('unsupported')) {
-        shouldSkip = true;
-
-        if (errorMessage.toLowerCase().includes('unsupported') && errorMessage.toLowerCase().includes('format')) {
-          skipReason = 'unsupported_image_format';
-        } else if (errorMessage.toLowerCase().includes('size') || errorMessage.toLowerCase().includes('large')) {
-          skipReason = 'image_too_large';
-        } else if (errorMessage.toLowerCase().includes('not accessible') || errorMessage.toLowerCase().includes('404') || errorMessage.toLowerCase().includes('403')) {
-          skipReason = 'image_not_accessible';
-        } else {
-          skipReason = 'api_image_error';
-        }
-      }
-
-      if (shouldSkip) {
-        console.log(`[Job ${jobId}] ⏭️ Skipping banner due to image issue: ${skipReason}`);
-
-        await supabase
-          .from("inspection_job_logs")
-          .update({
-            status: "skipped",
-            skip_reason: skipReason,
-            error_message: errorMessage,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("job_id", jobId)
-          .eq("banner_id", banner.id);
-      } else {
-        await supabase
-          .from("inspection_job_logs")
-          .update({
-            status: "failed",
-            error_message: errorMessage,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("job_id", jobId)
-          .eq("banner_id", banner.id);
+      } else if (result.status === 'rejected') {
+        console.error(`[Job ${jobId}] Banner processing failed:`, result.reason);
       }
     }
+    
+    console.log(`[Job ${jobId}] Batch ${batchNumber}/${totalBatches} completed`);
   }
+
 
   // Update collection status
   const { data: allBanners } = await supabase
@@ -468,6 +260,241 @@ async function processJobInBackground(jobId: string) {
     .eq("id", jobId);
 
   console.log(`[Job ${jobId}] ✓ Job completed successfully - ${passedCount}/${bannersToProcess.length} banners passed`);
+}
+
+async function processBanner(banner: any, jobId: string, supabase: any, openai: any, approvedIconsUrl: string | null): Promise<boolean> {
+  console.log(`[Job ${jobId}] Processing banner: ${banner.title}`);
+
+  try {
+    // Create job log entry
+    await supabase.from("inspection_job_logs").insert({
+      job_id: jobId,
+      banner_id: banner.id,
+      status: "processing",
+      created_at: new Date().toISOString(),
+    });
+
+    // Get banner images
+    const desktopImageUrl = banner.image_desktop;
+    const mobileImageUrl = banner.image_mobile;
+
+    if (!desktopImageUrl || !mobileImageUrl) {
+      throw new Error("Banner images not available");
+    }
+
+    console.log(`[Job ${jobId}] Desktop image: ${desktopImageUrl}`);
+    console.log(`[Job ${jobId}] Mobile image: ${mobileImageUrl}`);
+
+    // Prepare content parts for OpenAI
+    const contentParts: any[] = [
+      {
+        type: "text",
+        text: `다음 자료를 바탕으로 웹 배너 검수를 수행해주세요:
+
+## 입력 자료
+
+**1. HTML 코드:**`
+      },
+      {
+        type: "text",
+        text: banner.html_code // 실제 HTML 코드 삽입
+      },
+      {
+        type: "text",
+        text: "**2. PC 배경 이미지:**"
+      },
+      {
+        type: "image_url",
+        image_url: { 
+          url: desktopImageUrl,
+          detail: "high"
+        }
+      },
+      {
+        type: "text",
+        text: "**3. 모바일 배경 이미지:**"
+      },
+      {
+        type: "image_url",
+        image_url: { 
+          url: mobileImageUrl,
+          detail: "high"
+        }
+      },
+      {
+        type: "text",
+        text: "**4. 승인된 아이콘 목록 이미지:**"
+      },
+      {
+        type: "image_url",
+        image_url: { 
+          url: approvedIconsUrl,
+          detail: "high"
+        }
+      },
+      {
+        type: "text",
+        text: "\n\n위의 모든 입력 자료를 바탕으로 웹 배너 검수를 수행하고 JSON 형식으로 결과를 출력해주세요."
+      }
+    ];
+
+    console.log(`[Job ${jobId}] Calling OpenAI API...`);
+
+    const startTime = Date.now();
+    
+    let completion;
+    let result;
+    try {
+      completion = await Promise.race([
+        openai.chat.completions.create({
+          model: "gpt-4.1",
+          messages: [
+            {
+              role: "system",
+              content: [{ type: "text", text: SYSTEM_PROMPT }],
+            },
+            {
+              role: "user",
+              content: contentParts,
+            },
+          ],
+          response_format: { type: "json_object" },
+          max_tokens: 4096,
+          temperature: 0.1,
+        }),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("OpenAI API timeout after 150 seconds")), 150000)
+        ),
+      ]);
+
+      const responseTime = Date.now() - startTime;
+      console.log(`[Job ${jobId}] OpenAI response received (${responseTime}ms)`);
+
+      const responseText = completion.choices[0]?.message?.content;
+      if (!responseText) {
+        throw new Error("No response from OpenAI");
+      }
+
+      console.log(`[Job ${jobId}] Response length: ${responseText.length} chars`);
+
+      console.log(`[Job ${jobId}] Parsing JSON response...`);
+      result = JSON.parse(responseText);
+      console.log(`[Job ${jobId}] JSON parsed successfully, saving to database...`);
+    } catch (error) {
+      console.error(`[Job ${jobId}] ❌ OpenAI API Error:`, error);
+      console.error(`[Job ${jobId}] Error type:`, error instanceof Error ? error.constructor.name : typeof error);
+      console.error(`[Job ${jobId}] Error message:`, error instanceof Error ? error.message : String(error));
+      console.error(`[Job ${jobId}] Error stack:`, error instanceof Error ? error.stack : 'No stack trace');
+      throw error;
+    }
+
+    // Check if inspection result already exists
+    const { data: existingInspection } = await supabase
+      .from("inspection_results")
+      .select("id")
+      .eq("banner_id", banner.id)
+      .maybeSingle();
+
+    if (existingInspection) {
+      console.log(`[Job ${jobId}] Updating existing inspection result...`);
+      const { data: updateData, error: updateError } = await supabase
+        .from("inspection_results")
+        .update({
+          banner_inspection_report: result.bannerInspectionReport,
+          inspected_at: new Date().toISOString(),
+        })
+        .eq("banner_id", banner.id);
+      
+      if (updateError) {
+        console.error(`[Job ${jobId}] Failed to update inspection result:`, updateError);
+        throw updateError;
+      }
+      console.log(`[Job ${jobId}] Inspection result updated successfully`);
+    } else {
+      console.log(`[Job ${jobId}] Creating new inspection result...`);
+      const { data: insertData, error: insertError } = await supabase.from("inspection_results").insert({
+        banner_id: banner.id,
+        banner_inspection_report: result.bannerInspectionReport,
+        inspected_at: new Date().toISOString(),
+      });
+      
+      if (insertError) {
+        console.error(`[Job ${jobId}] Failed to insert inspection result:`, insertError);
+        throw insertError;
+      }
+      console.log(`[Job ${jobId}] Inspection result inserted successfully`);
+    }
+
+    const isPassed =
+      (result.bannerInspectionReport?.desktop?.overallStatus === "적합" || 
+       result.bannerInspectionReport?.desktop?.overallStatus === "준수") &&
+      (result.bannerInspectionReport?.mobile?.overallStatus === "적합" || 
+       result.bannerInspectionReport?.mobile?.overallStatus === "준수");
+
+    console.log(`[Job ${jobId}] Inspection completed - Desktop: ${result.bannerInspectionReport?.desktop?.overallStatus}, Mobile: ${result.bannerInspectionReport?.mobile?.overallStatus}`);
+
+    // Update job log
+    await supabase
+      .from("inspection_job_logs")
+      .update({
+        status: "completed",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("job_id", jobId)
+      .eq("banner_id", banner.id);
+
+    console.log(`[Job ${jobId}] ✓ Completed banner: ${banner.title} (${isPassed ? "PASSED" : "FAILED"})`);
+
+    return isPassed;
+
+  } catch (error) {
+    console.error(`[Job ${jobId}] ✗ Failed to process banner ${banner.title}:`, error);
+
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    let skipReason: string | null = null;
+    let shouldSkip = false;
+
+    if (errorMessage.includes('image') || errorMessage.includes('format') || errorMessage.includes('unsupported')) {
+      shouldSkip = true;
+
+      if (errorMessage.toLowerCase().includes('unsupported') && errorMessage.toLowerCase().includes('format')) {
+        skipReason = 'unsupported_image_format';
+      } else if (errorMessage.toLowerCase().includes('size') || errorMessage.toLowerCase().includes('large')) {
+        skipReason = 'image_too_large';
+      } else if (errorMessage.toLowerCase().includes('not accessible') || errorMessage.toLowerCase().includes('404') || errorMessage.toLowerCase().includes('403')) {
+        skipReason = 'image_not_accessible';
+      } else {
+        skipReason = 'api_image_error';
+      }
+    }
+
+    if (shouldSkip) {
+      console.log(`[Job ${jobId}] ⏭️ Skipping banner due to image issue: ${skipReason}`);
+
+      await supabase
+        .from("inspection_job_logs")
+        .update({
+          status: "skipped",
+          skip_reason: skipReason,
+          error_message: errorMessage,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("job_id", jobId)
+        .eq("banner_id", banner.id);
+    } else {
+      await supabase
+        .from("inspection_job_logs")
+        .update({
+          status: "failed",
+          error_message: errorMessage,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("job_id", jobId)
+        .eq("banner_id", banner.id);
+    }
+    
+    throw error; // Re-throw to let Promise.allSettled handle it
+  }
 }
 
 function extractBaseUrl(url: string): string {
