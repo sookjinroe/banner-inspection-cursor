@@ -141,18 +141,28 @@ export function InspectionPage() {
     setDeleting(true);
 
     try {
-      const { error } = await supabase
+      console.log('[InspectionPage] Deleting collection_result:', deleteConfirm.resultId);
+      
+      const { data, error } = await supabase
         .from('collection_results')
         .delete()
-        .eq('id', deleteConfirm.resultId);
+        .eq('id', deleteConfirm.resultId)
+        .select();
 
-      if (error) throw error;
+      console.log('[InspectionPage] Delete response:', { data, error });
 
+      if (error) {
+        console.error('[InspectionPage] Delete error details:', error);
+        throw error;
+      }
+
+      console.log('[InspectionPage] Delete successful, reloading results...');
       await loadResults();
       closeDeleteConfirm();
     } catch (err) {
       console.error('Failed to delete collection result:', err);
-      alert('Failed to delete collection result. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      alert(`Failed to delete: ${errorMessage}`);
     } finally {
       setDeleting(false);
     }
