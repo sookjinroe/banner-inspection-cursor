@@ -177,8 +177,8 @@ async function processJobInBackground(jobId: string) {
 
   let passedCount = 0;
 
-  // Process banners in batches of 4 (parallel processing)
-  const batchSize = 4;
+  // Process banners in batches of 3 (parallel processing)
+  const batchSize = 3;
   
   for (let i = 0; i < bannersToProcess.length; i += batchSize) {
     const batch = bannersToProcess.slice(i, i + batchSize);
