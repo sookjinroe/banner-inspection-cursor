@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "process-inspection": {
+      "timeout": 300
+    }
+  }
+}
+
