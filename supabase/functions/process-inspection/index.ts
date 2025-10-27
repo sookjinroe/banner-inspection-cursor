@@ -259,6 +259,7 @@ async function processJobInBackground(jobId: string) {
       const startTime = Date.now();
       
       let completion;
+      let result;
       try {
         completion = await Promise.race([
           openai.chat.completions.create({
@@ -293,7 +294,7 @@ async function processJobInBackground(jobId: string) {
         console.log(`[Job ${jobId}] Response length: ${responseText.length} chars`);
 
         console.log(`[Job ${jobId}] Parsing JSON response...`);
-        const result = JSON.parse(responseText);
+        result = JSON.parse(responseText);
         console.log(`[Job ${jobId}] JSON parsed successfully, saving to database...`);
       } catch (error) {
         console.error(`[Job ${jobId}] ❌ OpenAI API Error:`, error);
@@ -302,8 +303,6 @@ async function processJobInBackground(jobId: string) {
         console.error(`[Job ${jobId}] Error stack:`, error instanceof Error ? error.stack : 'No stack trace');
         throw error;
       }
-
-      const responseText = completion.choices[0]?.message?.content;
 
       // Check if inspection result already exists
       const { data: existingInspection } = await supabase
