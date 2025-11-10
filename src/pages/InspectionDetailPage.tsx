@@ -30,6 +30,7 @@ export function InspectionDetailPage() {
   const [isMobileLightboxOpen, setIsMobileLightboxOpen] = useState(false);
   const [collectionName, setCollectionName] = useState<string>('');
   const [allCollections, setAllCollections] = useState<CollectionResult[]>([]);
+  const [hidePassed, setHidePassed] = useState<boolean>(true); // 기본값: 통과한 배너 숨기기
 
   useEffect(() => {
     loadAllCollections();
@@ -42,6 +43,27 @@ export function InspectionDetailPage() {
       loadBannerData();
     }
   }, [resultId, bannerId]);
+
+  // 현재 선택된 배너가 필터링되어 숨겨졌을 때 다른 배너로 자동 이동
+  useEffect(() => {
+    if (!banner || !resultId) return;
+
+    const currentInspection = allInspections.get(banner.id);
+    const currentPassed = isInspectionPassed(currentInspection);
+
+    // hidePassed가 true이고 현재 배너가 Passed인 경우
+    if (hidePassed && currentPassed) {
+      // 필터링된 배너 목록에서 첫 번째 배너 찾기
+      const filteredBanners = allBanners.filter((b) => {
+        const inspection = allInspections.get(b.id);
+        return !isInspectionPassed(inspection);
+      });
+
+      if (filteredBanners.length > 0) {
+        navigateToBanner(filteredBanners[0].id);
+      }
+    }
+  }, [hidePassed, banner, allBanners, allInspections, resultId]);
 
   useEffect(() => {
     if (!resultId) return;
@@ -107,9 +129,10 @@ export function InspectionDetailPage() {
 
   async function loadAllCollections() {
     try {
+      // 필요한 필드만 선택 (전체 데이터가 필요하지 않음)
       const { data, error } = await supabase
         .from('collection_results')
-        .select('*')
+        .select('id, country_name, collected_at')
         .order('collected_at', { ascending: false });
 
       if (error) throw error;
@@ -125,28 +148,32 @@ export function InspectionDetailPage() {
     try {
       setLoading(true);
 
-      const { data: collectionData } = await supabase
-        .from('collection_results')
-        .select('country_name, country_url, css_file_url')
-        .eq('id', resultId)
-        .maybeSingle();
+      // collection_data와 banners를 병렬로 가져오기
+      const [collectionResponse, bannersResponse] = await Promise.all([
+        supabase
+          .from('collection_results')
+          .select('country_name, country_url, css_file_url')
+          .eq('id', resultId)
+          .maybeSingle(),
+        supabase
+          .from('banners')
+          .select('*')
+          .eq('collection_result_id', resultId)
+          .order('extracted_at', { ascending: true })
+      ]);
 
+      if (bannersResponse.error) throw bannersResponse.error;
+
+      const collectionData = collectionResponse.data;
       if (collectionData) {
         setCollectionName(collectionData.country_name);
       }
 
-      const { data: bannersData, error: bannersError } = await supabase
-        .from('banners')
-        .select('*')
-        .eq('collection_result_id', resultId)
-        .order('extracted_at', { ascending: true });
-
-      if (bannersError) throw bannersError;
-
+      const bannersData = bannersResponse.data || [];
       const cssFileUrl = collectionData?.css_file_url;
       const countryUrl = collectionData?.country_url;
 
-      const enrichedBanners = (bannersData || []).map(b => ({
+      const enrichedBanners = bannersData.map(b => ({
         ...b,
         css_file_url: cssFileUrl,
         country_url: countryUrl
@@ -159,20 +186,35 @@ export function InspectionDetailPage() {
         setBanner(currentBanner);
       }
 
+      // inspections는 banner_ids를 알아야 하므로 banners 이후에 가져오기
       const bannerIds = enrichedBanners.map(b => b.id);
-      const { data: inspectionsData } = await supabase
-        .from('inspection_results')
-        .select('banner_id, banner_inspection_report')
-        .in('banner_id', bannerIds);
+      
+      // banner_ids가 많을 경우를 대비해 청크로 나누기 (Supabase .in() 제한)
+      let inspectionsData: any[] = [];
+      if (bannerIds.length > 0) {
+        const chunkSize = 1000;
+        const chunks: string[][] = [];
+        for (let i = 0; i < bannerIds.length; i += chunkSize) {
+          chunks.push(bannerIds.slice(i, i + chunkSize));
+        }
+        
+        const inspectionPromises = chunks.map(chunk =>
+          supabase
+            .from('inspection_results')
+            .select('banner_id, banner_inspection_report')
+            .in('banner_id', chunk)
+        );
+        
+        const inspectionResponses = await Promise.all(inspectionPromises);
+        inspectionsData = inspectionResponses.flatMap(res => res.data || []);
+      }
 
       const inspectionsMap = new Map<string, BannerInspectionReport>();
-      if (inspectionsData) {
-        inspectionsData.forEach(insp => {
-          if (insp.banner_inspection_report) {
-            inspectionsMap.set(insp.banner_id, insp.banner_inspection_report);
-          }
-        });
-      }
+      inspectionsData.forEach(insp => {
+        if (insp.banner_inspection_report) {
+          inspectionsMap.set(insp.banner_id, insp.banner_inspection_report);
+        }
+      });
       setAllInspections(inspectionsMap);
 
       const currentInspection = inspectionsMap.get(bannerId);
@@ -445,11 +487,48 @@ export function InspectionDetailPage() {
           <div className="col-span-3">
             <Card className="sticky top-6">
               <div className="p-4">
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
-                  Banners ({allBanners.length})
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Banners
+                  </h3>
+                  <span className="text-xs text-gray-500">
+                    {(() => {
+                      const filtered = allBanners.filter((b) => {
+                        if (hidePassed) {
+                          const inspection = allInspections.get(b.id);
+                          return !isInspectionPassed(inspection);
+                        }
+                        return true;
+                      });
+                      return filtered.length;
+                    })()}
+                  </span>
+                </div>
+                
+                <div className="mb-3 pb-3 border-b border-gray-200">
+                  <label className="flex items-center gap-2 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={hidePassed}
+                      onChange={(e) => setHidePassed(e.target.checked)}
+                      className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900 focus:ring-2"
+                    />
+                    <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                      Hide passed banners
+                    </span>
+                  </label>
+                </div>
+
                 <div className="space-y-2">
-                  {allBanners.map((b) => {
+                  {allBanners
+                    .filter((b) => {
+                      if (hidePassed) {
+                        const inspection = allInspections.get(b.id);
+                        return !isInspectionPassed(inspection);
+                      }
+                      return true;
+                    })
+                    .map((b) => {
                     const bannerInspection = allInspections.get(b.id);
                     const statusText = getInspectionSummary(bannerInspection);
                     const bannerPassed = isInspectionPassed(bannerInspection);

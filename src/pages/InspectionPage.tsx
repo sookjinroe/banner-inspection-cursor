@@ -55,46 +55,107 @@ export function InspectionPage() {
       if (error) throw error;
       setResults(data || []);
 
-      if (data) {
+      if (data && data.length > 0) {
+        const resultIds = data.map(r => r.id);
+        
+        // 모든 banners와 active jobs를 병렬로 가져오기
+        const resultsWithJobs = data.filter(r => r.current_job_id);
+        const [bannersResponse, activeJobsResults] = await Promise.all([
+          // 모든 banners를 한 번에 가져오기
+          supabase
+            .from('banners')
+            .select('id, collection_result_id')
+            .in('collection_result_id', resultIds),
+          // 모든 active jobs를 한 번에 가져오기
+          Promise.all(
+            resultsWithJobs.map(r => getActiveJob(r.id))
+          )
+        ]);
+
+        // banners를 collection_result_id별로 그룹화
+        const bannersByCollection = new Map<string, string[]>();
+        if (bannersResponse.data) {
+          bannersResponse.data.forEach(banner => {
+            const collectionId = banner.collection_result_id;
+            if (!bannersByCollection.has(collectionId)) {
+              bannersByCollection.set(collectionId, []);
+            }
+            bannersByCollection.get(collectionId)!.push(banner.id);
+          });
+        }
+
+        // banner_ids를 수집
+        const allBannerIds = Array.from(bannersByCollection.values()).flat();
+        
+        // inspection_results를 가져오기 (banner_ids가 있을 때만)
+        let inspectionsData: any[] = [];
+        if (allBannerIds.length > 0) {
+          // Supabase의 .in()은 최대 1000개까지만 지원하므로 청크로 나눔
+          const chunkSize = 1000;
+          const chunks: string[][] = [];
+          for (let i = 0; i < allBannerIds.length; i += chunkSize) {
+            chunks.push(allBannerIds.slice(i, i + chunkSize));
+          }
+          
+          const inspectionPromises = chunks.map(chunk =>
+            supabase
+              .from('inspection_results')
+              .select('banner_id, banner_inspection_report')
+              .in('banner_id', chunk)
+          );
+          
+          const inspectionResponses = await Promise.all(inspectionPromises);
+          inspectionsData = inspectionResponses.flatMap(res => res.data || []);
+        }
+
+        // inspections를 banner_id별로 맵핑
+        const inspectionsByBannerId = new Map<string, any>();
+        inspectionsData.forEach(insp => {
+          inspectionsByBannerId.set(insp.banner_id, insp);
+        });
+
+        // counts 계산
         const counts = new Map();
         const jobs = new Map();
 
-        for (const result of data) {
-          const { data: bannersData } = await supabase
-            .from('banners')
-            .select('id')
-            .eq('collection_result_id', result.id);
-
-          const totalBanners = bannersData?.length || 0;
+        data.forEach(result => {
+          const bannerIds = bannersByCollection.get(result.id) || [];
+          const totalBanners = bannerIds.length;
 
           if (totalBanners > 0) {
-            const bannerIds = bannersData?.map(b => b.id) || [];
-            const { data: inspectionsData } = await supabase
-              .from('inspection_results')
-              .select('banner_id, banner_inspection_report')
-              .in('banner_id', bannerIds);
+            let inspectedCount = 0;
+            let passedCount = 0;
 
-            const inspectedCount = inspectionsData?.filter(i => i.banner_inspection_report !== null).length || 0;
-            const passedCount = inspectionsData?.filter(inspection => {
-              const report = inspection.banner_inspection_report as BannerInspectionReport | null;
-              if (!report) return false;
-              return report.desktop?.overallStatus === '적합' && report.mobile?.overallStatus === '적합';
-            }).length || 0;
+            bannerIds.forEach(bannerId => {
+              const inspection = inspectionsByBannerId.get(bannerId);
+              if (inspection && inspection.banner_inspection_report) {
+                inspectedCount++;
+                const report = inspection.banner_inspection_report as BannerInspectionReport;
+                if (report.desktop?.overallStatus === '적합' && report.mobile?.overallStatus === '적합') {
+                  passedCount++;
+                }
+              }
+            });
 
             counts.set(result.id, {
               total: totalBanners,
               inspected: inspectedCount,
               passed: passedCount
             });
+          } else {
+            counts.set(result.id, {
+              total: 0,
+              inspected: 0,
+              passed: 0
+            });
           }
 
-          if (result.current_job_id) {
-            const activeJob = await getActiveJob(result.id);
-            if (activeJob) {
-              jobs.set(result.id, activeJob);
-            }
+          // active jobs 설정
+          const jobIndex = resultsWithJobs.findIndex(r => r.id === result.id);
+          if (jobIndex >= 0 && activeJobsResults[jobIndex]) {
+            jobs.set(result.id, activeJobsResults[jobIndex]);
           }
-        }
+        });
 
         setBannerCounts(counts);
         setActiveJobs(jobs);
