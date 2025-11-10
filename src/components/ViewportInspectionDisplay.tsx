@@ -4,11 +4,13 @@ import { AlertCircle, CheckCircle } from 'lucide-react';
 interface ViewportInspectionDisplayProps {
   inspection: ViewportInspection;
   viewportName: string;
+  hidePassed?: boolean; // '준수' 항목 숨기기
 }
 
 export function ViewportInspectionDisplay({
   inspection,
   viewportName,
+  hidePassed = false,
 }: ViewportInspectionDisplayProps) {
   const getStatusColor = (status: '준수' | '위반') => {
     return status === '준수'
@@ -70,7 +72,15 @@ export function ViewportInspectionDisplay({
 
       <div className="space-y-3">
         <h4 className="text-sm font-medium text-gray-700">Detailed Report</h4>
-        {inspection.detailedReport.map((item, index) => (
+        {inspection.detailedReport
+          .filter((item) => {
+            // hidePassed가 true이면 '준수' 항목 제외
+            if (hidePassed && item.status === '준수') {
+              return false;
+            }
+            return true;
+          })
+          .map((item, index) => (
           <div
             key={index}
             className={`border rounded-lg p-4 ${getStatusColor(item.status)}`}

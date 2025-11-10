@@ -31,6 +31,7 @@ export function InspectionDetailPage() {
   const [collectionName, setCollectionName] = useState<string>('');
   const [allCollections, setAllCollections] = useState<CollectionResult[]>([]);
   const [hidePassed, setHidePassed] = useState<boolean>(true); // 기본값: 통과한 배너 숨기기
+  const [hidePassedResults, setHidePassedResults] = useState<boolean>(true); // 기본값: 검수 결과에서 '준수' 항목 숨기기
 
   useEffect(() => {
     loadAllCollections();
@@ -692,9 +693,23 @@ export function InspectionDetailPage() {
               {inspection?.desktop && (
                 <Card>
                   <div className="p-6">
+                    <div className="mb-4 pb-4 border-b border-gray-200">
+                      <label className="flex items-center gap-2 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={hidePassedResults}
+                          onChange={(e) => setHidePassedResults(e.target.checked)}
+                          className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900 focus:ring-2"
+                        />
+                        <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                          Hide passed items
+                        </span>
+                      </label>
+                    </div>
                     <ViewportInspectionDisplay
                       inspection={inspection.desktop}
                       viewportName="Desktop"
+                      hidePassed={hidePassedResults}
                     />
                   </div>
                 </Card>
@@ -727,9 +742,23 @@ export function InspectionDetailPage() {
               {inspection?.mobile && (
                 <Card>
                   <div className="p-6">
+                    <div className="mb-4 pb-4 border-b border-gray-200">
+                      <label className="flex items-center gap-2 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={hidePassedResults}
+                          onChange={(e) => setHidePassedResults(e.target.checked)}
+                          className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900 focus:ring-2"
+                        />
+                        <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                          Hide passed items
+                        </span>
+                      </label>
+                    </div>
                     <ViewportInspectionDisplay
                       inspection={inspection.mobile}
                       viewportName="Mobile"
+                      hidePassed={hidePassedResults}
                     />
                   </div>
                 </Card>
